@@ -1,2 +1,3 @@
 # WL-MonadicEventRecordsTransformations-paclet
-A Wolfram Language (aka Matheamtica) software monad for the transformation of event records.
+
+A Wolfram Language (aka Mathematica) software monad for the transformation of event records.
