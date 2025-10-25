@@ -1,7 +1,7 @@
 PacletObject[
   <|
     "Name" -> "AntonAntonov/MonadicEventRecordsTransformations",
-    "Description" -> "Software monad for transformation of event records",
+    "Description" -> "A software monad for transformation of event records",
     "Creator" -> "Anton Antonov",
     "Version" -> "1.0.0",
     "WolframVersion" -> "12.1+",
