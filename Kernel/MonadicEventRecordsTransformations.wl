@@ -1043,7 +1043,7 @@ ERTMonMakeContingencyMatrices[ opts:OptionsPattern[] ][xs_, context_] :=
                 ],
                 tsRowSpecIDs];
 
-      cmats = CrossTabulate /@ tbls;
+      cmats = CrossTabulate[#, "Sparse" -> True]& /@ tbls;
 
       cmats = ToSSparseMatrix /@ cmats;
 
