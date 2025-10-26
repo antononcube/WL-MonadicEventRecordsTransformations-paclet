@@ -4,9 +4,8 @@
 
 A software monad for transformation of event records with different variables and entities into (manageable) time series and sparse matrices.
 
-### Details
 
-<instructions>Details may include a long description of the resource's contents, history, methodology or other relevant information. Give references here if they are directly relevant to the resource. The details will appear above the examples on the webpage for the resource.</instructions>
+### Details
 
 * The primary goal of this Event Records Transformations Monad (ERTMon) is to convert hetergenous events data into sparse matrices (suitable for use in machine learning and statistical algorithms.)
 
@@ -23,6 +22,11 @@ A software monad for transformation of event records with different variables an
 * The matrices are normalized according to the computational specification.
 
 * A normalization can be "global" across all entities for a given variable, or "local", separately computed for each matrix row.
+
+
+Here is flowchart encompassing most of the ERTMon workflows:
+
+![](./Documentation/Diagrams/ERTMon-workflows.jpg)
 
 ------
 
