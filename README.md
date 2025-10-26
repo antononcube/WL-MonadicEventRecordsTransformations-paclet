@@ -7,9 +7,10 @@ A software monad for transformation of event records with different variables an
 
 ### Details
 
-* The primary goal of this Event Records Transformations Monad (ERTMon) is to convert hetergenous events data into sparse matrices (suitable for use in machine learning and statistical algorithms.)
+* The primary goal of this **E**vent **R**ecords **T**ransformations **Mon**ad (ERTMon) 
+  is to convert heterogeneous events data into sparse matrices (suitable for use in machine learning and statistical algorithms.)
 
-* The produced sparse matrices are with named rows and columns -- see ["AntonAntonov/SSparseMatrix"](https://resources.wolframcloud.com/PacletRepository/resources/AntonAntonov/SSparseMatrix/).
+* The produced sparse matrices are with named rows and columns -- see ["AntonAntonov/SSparseMatrix"](https://resources.wolframcloud.com/PacletRepository/resources/AntonAntonov/SSparseMatrix/), [AAp4].
 
 * The monad takes a computational specification dataset.
 
@@ -17,14 +18,14 @@ A software monad for transformation of event records with different variables an
 
 * Groups corresponding to the same variable are used to make a sparse matrix corresponding to that variable.
 
-* In the obtained variable sparse matrices each rows corresponds to an entitity identifier.
+* In the obtained variable sparse matrices each rows corresponds to an entity identifier.
 
 * The matrices are normalized according to the computational specification.
 
 * A normalization can be "global" across all entities for a given variable, or "local", separately computed for each matrix row.
 
 
-Here is flowchart encompassing most of the ERTMon workflows:
+Here is a flowchart encompassing most of the ***ERTMon*** workflows:
 
 ![](./Documentation/Diagrams/ERTMon-workflows.jpg)
 
@@ -134,7 +135,7 @@ compSpec = Dataset[Association["Humidity.Mean" -> Association["Variable" -> "Hum
 Here is a monad pipeline that process the event records into sparse matrices:
 
 ```mathematica
-p2 = 
+p = 
 	ERTMonUnit[]⟹
 	ERTMonSetEventRecords[eventRecords]⟹
 	ERTMonSetEntityAttributes[entityAttributes]⟹
@@ -148,10 +149,21 @@ p2 =
 	ERTMonEntityVariableGroupsToTimeSeries["MaxTime"]⟹
 	ERTMonAggregateTimeSeries⟹
 	ERTMonMakeContingencyMatrices⟹
-	ERTMonEchoFunctionValue["Contingency matrices:", MatrixPlot /@ #&];
+	ERTMonEchoFunctionValue["Contingency matrices:", MatrixPlot /@ #&]
 ```
 
 ![](./Documentation/Diagrams/ERTMonEchoFunctionOutputs.png)
+
+![](./Documentation/Diagrams/ERTMonSummaryBoxCompact.png)
+
+
+Here is the expanded version of the summary box:
+
+```mathematica
+p
+```
+
+![](./Documentation/Diagrams/ERTMonSummaryBoxExpanded.png)
 
 ----
 
