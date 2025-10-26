@@ -131,19 +131,19 @@ Here is a monad pipeline that process the event records into sparse matrices:
 
 ```mathematica
 p2 = 
-	ERTMonUnit[]\[DoubleLongRightArrow]
-	ERTMonSetEventRecords[eventRecords]\[DoubleLongRightArrow]
-	ERTMonSetEntityAttributes[entityAttributes]\[DoubleLongRightArrow]
-	ERTMonEchoDataSummary\[DoubleLongRightArrow]
-	ERTMonSetComputationSpecification[compSpec]\[DoubleLongRightArrow]
-	ERTMonGroupEntityVariableRecords\[DoubleLongRightArrow]
-	ERTMonComputeVariableStatistic[Histogram]\[DoubleLongRightArrow]
-	ERTMonEchoFunctionValue["Variable distributions:"]\[DoubleLongRightArrow]
-	ERTMonFindVariableOutlierBoundaries\[DoubleLongRightArrow]
-	ERTMonEchoFunctionValue["Outlier boundaries:"]\[DoubleLongRightArrow]
-	ERTMonEntityVariableGroupsToTimeSeries["MaxTime"]\[DoubleLongRightArrow]
-	ERTMonAggregateTimeSeries\[DoubleLongRightArrow]
-	ERTMonMakeContingencyMatrices\[DoubleLongRightArrow]
+	ERTMonUnit[]⟹
+	ERTMonSetEventRecords[eventRecords]⟹
+	ERTMonSetEntityAttributes[entityAttributes]⟹
+	ERTMonEchoDataSummary⟹
+	ERTMonSetComputationSpecification[compSpec]⟹
+	ERTMonGroupEntityVariableRecords⟹
+	ERTMonComputeVariableStatistic[Histogram]⟹
+	ERTMonEchoFunctionValue["Variable distributions:"]⟹
+	ERTMonFindVariableOutlierBoundaries⟹
+	ERTMonEchoFunctionValue["Outlier boundaries:"]⟹
+	ERTMonEntityVariableGroupsToTimeSeries["MaxTime"]⟹
+	ERTMonAggregateTimeSeries⟹
+	ERTMonMakeContingencyMatrices⟹
 	ERTMonEchoFunctionValue["Contingency matrices:", MatrixPlot /@ #&];
 ```
 
