@@ -102,7 +102,7 @@ PacletInstall["AntonAntonov/SSparseMatrix", AllowVersionUpdate -> False];
 Begin["`Private`"];
 
 Needs["AntonAntonov`MonadMakers`"];
-Needs["AntonAntonov`DataReshapers`"];
+Quiet @ Needs["AntonAntonov`DataReshapers`"];
 Needs["AntonAntonov`SSparseMatrix`"];
 Needs["AntonAntonov`OutlierIdentifiers`"];
 
@@ -1159,22 +1159,25 @@ WeatherEventRecords[
 
     Block[{wStations, aWStations, tsData, XXX, eventRecords, entityAttributes, aKnownStations},
 
-      wStations = WeatherData[{#, nStations}] & /@ citiesSpec;
-      wStations = Map[#[[2]] &, wStations, {2}];
-
       aWStations =
-          Join @@ MapThread[
-            AssociationThread[#1, XXX] /. XXX -> #2 &, {wStations, citiesSpec}];
+        If[nStations>0,
+          wStations = WeatherData[{#, nStations}] & /@ citiesSpec;
+          wStations = Map[#[[2]] &, wStations, {2}];
+          Join @@ MapThread[AssociationThread[#1, XXX] /. XXX -> #2 &, {wStations, citiesSpec}],
+          (*ELSE*)
+          AssociationThread[citiesSpec, citiesSpec]   
+        ];
 
-      tsData =
-          Association@
-              Flatten@Outer[{#1, #2} ->
-                  WeatherData[#1, #2, {dateRange[[1]], dateRange[[2]], "Day"}] &,
-                Keys[aWStations], wProps, 1];
+      tsData = Association @ Flatten@Outer[{#1, #2} -> WeatherData[#1, #2, {dateRange[[1]], dateRange[[2]], "Day"}] &, Keys[aWStations], wProps, 1];
 
       tsData = DeleteCases[tsData, _Missing];
 
       If[ !AssociationQ[tsData], Return[$Failed]];
+
+      If[nStations<1,
+        tsData = KeyMap[{StringRiffle[#[[1]],"_"], #[[2]]}&, tsData];
+        aWStations = KeyMap[StringRiffle[#,"_"]&, aWStations];
+      ];
 
       tsData = Select[tsData, MatchQ[#, _TemporalData] &];
 
@@ -1197,12 +1200,14 @@ WeatherEventRecords[
 
       entityAttributes =
           Dataset[KeyValueMap[Flatten[{#1, #2[[1]], #2[[-1]]}] &, aWStations]][All, AssociationThread[{"Station", "City", "Country"} -> #] &];
-      aKnownStations = Dispatch[Append[Thread[Keys[tsData][[All, 1]] -> True], _String -> False]];
-      entityAttributes = entityAttributes[Select[#Station /. aKnownStations &]];
-        
-      entityAttributes =LongFormDataset[entityAttributes, "Station", {"City", "Country"}];
+   
+      aKnownStations = Dispatch[Append[Thread[Union@Keys[tsData][[All, 1]] -> True], _String -> False]];
 
-      entityAttributes =entityAttributes[All, Association[{"EntityID" -> #Station, "Attribute" -> #Variable, "Value" -> #Value}] &];
+      entityAttributes = entityAttributes[Select[#Station /. aKnownStations &]];
+
+      entityAttributes = LongFormDataset[entityAttributes, "Station", {"City", "Country"}];
+
+      entityAttributes = entityAttributes[All, Association[{"EntityID" -> #Station, "Attribute" -> #Variable, "Value" -> #Value}] &];
 
       <| "eventRecords"->eventRecords, "entityAttributes"->entityAttributes |>
     ];
